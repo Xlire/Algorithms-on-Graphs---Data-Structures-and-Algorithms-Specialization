@@ -19,26 +19,20 @@ import queue
 
 def bipartite(adj):
     #write your code here
-    visited = [False] * len(adj)
-    visited[0] = True
-
-    partition = [-1] * len(adj)
-    partition[0] = 0
-
-    queue = []
-    queue.append(0)
-
-    while queue:
-        v = queue.pop(0)
-        for u in adj[v]:
-            if partition[u] == partition[v]:
-                return 0
-            else:
-                if not visited[u]:
-                    visited[u] = True
-                    partition[u] = 1 - partition[v]
-                    queue.append(u)
-
+    color = [-1] * len(adj)
+    for s in range(len(adj)):
+        if color[s] == -1:
+            color[s] = 0
+            q = queue.Queue()
+            q.put(s)
+            while not q.empty():
+                u = q.get()
+                for v in adj[u]:
+                    if color[v] == -1:
+                        color[v] = 1 - color[u]
+                        q.put(v)
+                    elif color[v] == color[u]:
+                        return 0
     return 1
 
 if __name__ == '__main__':
