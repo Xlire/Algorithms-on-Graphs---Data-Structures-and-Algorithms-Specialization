@@ -8,24 +8,19 @@ import sys
 import queue
 
 def distance(adj, s, t):
-    n = len(adj)
-
-    dist = [n] * n
+    dist = [-1] * len(adj)
     dist[s] = 0
-    
-    queue = []
-    queue.append(s)
-
-    while queue:
-        v = queue.pop(0)
-    
-        for u in adj[v]:
-            if dist[u] == n:
-                queue.append(u)
-                dist[u] = dist[v] + 1
-
-    return -1 if dist[t] == n else dist[t]
-
+    q = queue.Queue()
+    q.put(s)
+    while not q.empty():
+        u = q.get()
+        for v in adj[u]:
+            if dist[v] == -1:
+                dist[v] = dist[u] + 1
+                q.put(v)
+                if v == t:
+                    return dist[v]
+    return dist[t]
 
 if __name__ == '__main__':
     input = sys.stdin.read()

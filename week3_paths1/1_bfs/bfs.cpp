@@ -7,6 +7,27 @@ using std::queue;
 
 int distance(vector<vector<int> > &adj, int s, int t) {
   //write your code here
+  vector<int> dis(adj.size(), -1);
+  //FIFO
+  queue<int> q;
+  q.push(s);
+  dis[s] = 0;
+  while (!q.empty())
+  {
+    int u = q.front();
+    q.pop();
+    for (int v : adj[u])
+    {
+      if (dis[v] == -1)
+      {
+        dis[v] = dis[u] + 1;
+        q.push(v);
+        if (v == t)
+          return dis[v];
+      }
+    }
+  }
+  
   return -1;
 }
 
@@ -23,5 +44,7 @@ int main() {
   int s, t;
   std::cin >> s >> t;
   s--, t--;
-  std::cout << distance(adj, s, t);
+  std::cout << distance(adj, s, t) << std::endl;
+  std::cin.ignore();
+  std::cin.get();
 }
