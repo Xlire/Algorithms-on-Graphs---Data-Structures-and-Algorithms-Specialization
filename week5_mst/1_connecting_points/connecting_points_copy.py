@@ -1,0 +1,41 @@
+#Uses python3
+import sys
+import math
+import queue
+
+def distance(x1, y1, x2, y2):
+    return ((x1-x2)**2+(y1-y2)**2)**0.5
+
+def minimum_distance(x, y):
+    result = 0.
+    #write your code here
+    n = len(x)
+    cost = [float('inf')] * n
+    cost[0] = 0
+    #implement Prim's algorithm here
+    Q = queue.PriorityQueue() #this help extract min element every time
+    Q.put((0, 0)) # (cost, vertex)
+    processed = set()
+    while not Q.empty():
+        d, v = Q.get()
+        if v not in processed:
+            result += d
+            processed.add(v)
+            for z in range(n):
+                if z not in processed:
+                    currCost = distance(x[v], y[v], x[z], y[z])
+                    if cost[z] > currCost:
+                        cost[z] = currCost
+                        Q.put((currCost, z))
+    # return minimum cost to connect all points
+
+    return result
+
+
+if __name__ == '__main__':
+    input = sys.stdin.read()
+    data = list(map(int, input.split()))
+    n = data[0]
+    x = data[1::2]
+    y = data[2::2]
+    print("{0:.9f}".format(minimum_distance(x, y)))
